@@ -26,7 +26,7 @@ public class ToDoService {
         return toDoRepository.findAll(sorted);
     }
 
-    public List<ToDo> Update(Long id, ToDo task){
+    public List<ToDo> update(Long id, ToDo task){
         ToDo newTask = toDoRepository.findById(id).orElseThrow(() ->new IllegalArgumentException("Tarefa com ID " + id + " não encontrada"));
         newTask.setName(task.getName());
         newTask.setDescription(task.getDescription());
@@ -37,7 +37,9 @@ public class ToDoService {
     }
 
     public  List<ToDo> delete(long id){
-        toDoRepository.deleteById(id);
+        if(toDoRepository.existsById(id))
+            toDoRepository.deleteById(id);
+        else throw new IllegalArgumentException("Tarefa com ID " + id + " não encontrada");
         return show();
     }
 }

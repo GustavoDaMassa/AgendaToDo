@@ -2,6 +2,7 @@ package br.com.Agenda.Controller;
 
 import br.com.Agenda.Model.ToDo;
 import br.com.Agenda.Service.ToDoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,22 +19,29 @@ public class ToDoContoller {
     }
 
     @PostMapping
-    ToDo create(@RequestBody ToDo task){
-        return toDoService.create(task);
+    ResponseEntity<ToDo> create(@RequestBody ToDo task){
+        return new ResponseEntity<>(toDoService.create(task), HttpStatus.CREATED);
     }
 
     @GetMapping
-    List<ToDo> show(){
-        return toDoService.show();
+    ResponseEntity<List<ToDo>> show(){
+        return ResponseEntity.ok(toDoService.show());
     }
 
-    @PutMapping("{id}")
-    List<ToDo> Update(@PathVariable Long id ,@RequestBody ToDo task){
-        return toDoService.Update(id,task);
+    @PutMapping("/{id}")
+     ResponseEntity<?> Update(@PathVariable Long id ,@RequestBody ToDo task){
+        try {
+            return ResponseEntity.ok(toDoService.update(id, task));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
-    @DeleteMapping("{id}")
-    List<ToDo> delete(@PathVariable Long id){
-        return toDoService.delete(id);
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> delete(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(toDoService.delete(id));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());        }
     }
 }
