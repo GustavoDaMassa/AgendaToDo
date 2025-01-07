@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ToDoService {
@@ -25,8 +26,13 @@ public class ToDoService {
         return toDoRepository.findAll(sorted);
     }
 
-    public List<ToDo> Update(ToDo task){
-        toDoRepository.save(task);
+    public List<ToDo> Update(Long id, ToDo task){
+        ToDo newTask = toDoRepository.findById(id).orElseThrow(() ->new IllegalArgumentException("Tarefa com ID " + id + " não encontrada"));
+        newTask.setName(task.getName());
+        newTask.setDescription(task.getDescription());
+        newTask.setDone(task.isDone());
+        newTask.setPriority(task.getPriority());
+        toDoRepository.save(newTask);
         return show();
     }
 
