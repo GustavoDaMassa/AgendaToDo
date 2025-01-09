@@ -2,6 +2,7 @@ package br.com.Agenda.Service;
 
 import br.com.Agenda.Model.ToDo;
 import br.com.Agenda.Repository.ToDoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +12,9 @@ import java.util.Optional;
 @Service
 public class ToDoService {
 
-    private final ToDoRepository toDoRepository;
+    @Autowired
+    private ToDoRepository toDoRepository;
 
-    public ToDoService(ToDoRepository toDoRepository){
-        this.toDoRepository = toDoRepository;
-    }
 
     public ToDo create(ToDo task){
         return toDoRepository.save(task);

@@ -21,6 +21,9 @@ public class ToDo {
         this.priority = priority;
     }
 
+    public ToDo() {
+    }
+
     public Long getId() {
         return id;
     }
