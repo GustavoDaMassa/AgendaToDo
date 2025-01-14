@@ -21,7 +21,7 @@ class ToDoContollerTest {
 
     @Test
     @DisplayName("Return Task Successfully")
-    void createTaskSuccess() {
+    void testcreateTaskSuccess() {
 
         var task = new ToDo("task","test",true,0);
 
@@ -29,5 +29,21 @@ class ToDoContollerTest {
 
         assertEquals(HttpStatus.CREATED,toDoResponseEntity.getStatusCode());
         assertNotNull(toDoResponseEntity.getBody());
+        assertEquals("task",toDoResponseEntity.getBody().getName());
+        assertEquals("test",toDoResponseEntity.getBody().getDescription());
+        assertEquals(0,toDoResponseEntity.getBody().getPriority());
+        assertTrue(toDoResponseEntity.getBody().isDone());
+    }
+
+    @Test
+    @DisplayName("Returns an exception when task created has null name")
+    void testcreateTaskFailure(){
+
+        var task =new ToDo("","test",false,0);
+
+        testRestTemplate.postForEntity("/tasks", task, ToDo.class);
+
+
+
     }
 }

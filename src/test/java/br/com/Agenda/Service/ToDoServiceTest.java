@@ -37,6 +37,12 @@ class ToDoServiceTest {
         Mockito.verify(toDoRepository, Mockito.times(1)).save(task);
 
     }
+    @Test
+    @DisplayName("Return an exception")
+    void createToDoFailure(){
+
+
+    }
 
     @Test
     void show() {
