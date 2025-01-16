@@ -3,6 +3,7 @@ package br.com.Agenda.Model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 @Table(name = "tasks")
@@ -20,9 +21,10 @@ public class ToDo {
     @Size(max = 250, message = "The description has a limit of 500 characters")
     private String description;
 
-    private boolean done;
+    private boolean done = true;
 
     @Max(value = 10, message = "Priority must not be greater than 10")
+    @PositiveOrZero(message = "Priority cannot be negative")
     private int priority;
 
     // ------------------------------------------------------------------------------------------
