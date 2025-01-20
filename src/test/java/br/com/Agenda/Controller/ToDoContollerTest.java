@@ -48,7 +48,7 @@ class ToDoContollerTest {
                 ,false,11);
 
         ResponseEntity<ToDo> toDoResponseEntity = testRestTemplate.postForEntity("/tasks", task, ToDo.class);
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,toDoResponseEntity.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST,toDoResponseEntity.getStatusCode());
 
     }
 

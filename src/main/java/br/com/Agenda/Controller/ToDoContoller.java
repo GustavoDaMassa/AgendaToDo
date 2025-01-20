@@ -3,6 +3,7 @@ package br.com.Agenda.Controller;
 import br.com.Agenda.Model.ToDo;
 import br.com.Agenda.Service.ToDoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
-@Tag(name = "Agenda-desafio")
+@Tag(name = "Agenda")
 public class ToDoContoller {
 
     private final ToDoService toDoService;
@@ -52,7 +53,7 @@ public class ToDoContoller {
             @ApiResponse(responseCode = "400", description = "Dados de requisição invalidos"),
             @ApiResponse(responseCode = "404", description = "Id não encontrado")
     })
-     ResponseEntity<?> Update(@PathVariable Long id ,@RequestBody @Valid ToDo task){
+     ResponseEntity<?> Update(@Parameter(description = "Id da tarefa que deve ser atualizada") @PathVariable Long id ,@RequestBody @Valid ToDo task){
         try {
             return ResponseEntity.ok(toDoService.update(id, task));
         }catch (IllegalArgumentException e){
@@ -66,7 +67,7 @@ public class ToDoContoller {
             @ApiResponse(responseCode = "200", description = "Tarefa atualizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Id não encontrado")
     })
-    ResponseEntity<?> delete(@PathVariable Long id){
+    ResponseEntity<?> delete(@Parameter(description = "Id da tarefa que deve ser removida") @PathVariable Long id){
         try {
             return ResponseEntity.ok(toDoService.delete(id));
         }catch (IllegalArgumentException e){
