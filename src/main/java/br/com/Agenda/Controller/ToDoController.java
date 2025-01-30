@@ -1,5 +1,7 @@
 package br.com.Agenda.Controller;
 
+import br.com.Agenda.Model.RequestDTO;
+import br.com.Agenda.Model.ResponseDTO;
 import br.com.Agenda.Model.ToDo;
 import br.com.Agenda.Service.ToDoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,12 +20,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/tasks")
 @Tag(name = "Agenda")
-public class ToDoContoller {
+public class ToDoController {
 
+    private final TodoResponseMapper todoResponseMapper;
     private final ToDoService toDoService;
 
-    public ToDoContoller (ToDoService toDoService){
-        this.toDoService = toDoService;;
+    public ToDoController(TodoResponseMapper todoResponseMapper, ToDoService toDoService) {
+        this.todoResponseMapper = todoResponseMapper;
+        this.toDoService = toDoService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -32,8 +36,9 @@ public class ToDoContoller {
             @ApiResponse(responseCode = "201", description = "Tarefa criada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados de requisição invalidos")
     })
-    ResponseEntity<ToDo> create(@RequestBody @Valid ToDo task){
-        return new ResponseEntity<>(toDoService.create(task), HttpStatus.CREATED);
+    ResponseEntity<ResponseDTO> create(@RequestBody @Valid RequestDTO taskDTO){
+        ResponseDTO taskCreated = todoResponseMapper.toDTOwithID(toDoService.create(taskDTO));
+        return  ResponseEntity.status(HttpStatus.CREATED).body(taskCreated);
     }
 
     @GetMapping

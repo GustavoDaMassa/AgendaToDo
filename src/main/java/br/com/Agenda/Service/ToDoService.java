@@ -1,5 +1,6 @@
 package br.com.Agenda.Service;
 
+import br.com.Agenda.Model.RequestDTO;
 import br.com.Agenda.Model.ToDo;
 import br.com.Agenda.Repository.ToDoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,8 @@ public class ToDoService {
     private ToDoRepository toDoRepository;
 
 
-    public ToDo create(ToDo task){
+    public ToDo create( RequestDTO taskDTO){
+        var task = new ToDo(taskDTO.name(), taskDTO.description(), false, taskDTO.priority());
         return toDoRepository.save(task);
     }
 

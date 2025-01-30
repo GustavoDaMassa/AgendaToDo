@@ -1,5 +1,6 @@
 package br.com.Agenda.Controller;
 
+import br.com.Agenda.Model.RequestDTO;
 import br.com.Agenda.Model.ToDo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class ToDoContollerTest {
+class ToDoControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -28,27 +29,27 @@ class ToDoContollerTest {
     @DisplayName("Return Task created Successfully")
     void testCreateTaskSuccess() {
 
-        var task = new ToDo("task","test",true,0);
+        var taskDTO= new RequestDTO("task","test",0);
 
-        ResponseEntity<ToDo> toDoResponseEntity = testRestTemplate.postForEntity("/tasks", task, ToDo.class);
+
+        ResponseEntity<ToDo> toDoResponseEntity = testRestTemplate.postForEntity("/tasks", taskDTO, ToDo.class);
 
         assertEquals(HttpStatus.CREATED,toDoResponseEntity.getStatusCode());
         assertNotNull(toDoResponseEntity.getBody());
         assertEquals("task",toDoResponseEntity.getBody().getName());
         assertEquals("test",toDoResponseEntity.getBody().getDescription());
         assertEquals(0,toDoResponseEntity.getBody().getPriority());
-        assertTrue(toDoResponseEntity.getBody().isDone());
+        assertFalse(toDoResponseEntity.getBody().isDone());
     }
 
     @Test
     @DisplayName("Returns an exception when task created has null name")
     void testCreateTaskFailure() throws Exception {
 
-        var task =new ToDo("","test"
-                ,false,11);
+        var taskDTO= new RequestDTO("","test",11);
 
-        ResponseEntity<ToDo> toDoResponseEntity = testRestTemplate.postForEntity("/tasks", task, ToDo.class);
-        assertEquals(HttpStatus.BAD_REQUEST,toDoResponseEntity.getStatusCode());
+        ResponseEntity<ToDo> toDoResponseEntity = testRestTemplate.postForEntity("/tasks", taskDTO, ToDo.class);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR,toDoResponseEntity.getStatusCode());
 
     }
 

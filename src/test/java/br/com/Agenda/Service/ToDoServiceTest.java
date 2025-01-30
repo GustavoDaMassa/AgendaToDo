@@ -1,5 +1,6 @@
 package br.com.Agenda.Service;
 
+import br.com.Agenda.Model.RequestDTO;
 import br.com.Agenda.Model.ToDo;
 import br.com.Agenda.Repository.ToDoRepository;
 import net.bytebuddy.asm.Advice;
@@ -37,29 +38,31 @@ class ToDoServiceTest {
     @DisplayName(" task created and save ")
     void createToDoSucsess() {
 
-        var task = new ToDo("Task","test",true,0);
+        var taskDTO = new RequestDTO("Task","test",0);
+        var task = new ToDo(taskDTO.name(), taskDTO.description(), true, taskDTO.priority());
 
-        Mockito.when(toDoRepository.save(task)).thenReturn(task);
+        Mockito.when(toDoRepository.save(Mockito.any(ToDo.class))).thenReturn(task);
+        ToDo toDo = toDoService.create(taskDTO);
 
-        ToDo toDo = toDoService.create(task);
-
-        Mockito.verify(toDoRepository, Mockito.times(1)).save(task);
+        Mockito.verify(toDoRepository, Mockito.times(1)).save(Mockito.any(ToDo.class));
         assertEquals(task.getName(), toDo.getName());
         assertEquals(task.getDescription(), toDo.getDescription());
         assertEquals(task.getPriority(), toDo.getPriority());
-        assertEquals(task.isDone(), toDo.isDone());
+        assertTrue(toDo.isDone());
 
     }
     @Test
     @DisplayName("Return an exception when the name isn't provided")
     void createToDoFailure() throws Exception{
 
-        var task = new ToDo("","test",true,-1);
+        var taskDTO = new RequestDTO("","test",-1);
+        var task = new ToDo(taskDTO.name(), taskDTO.description(), true, taskDTO.priority());
 
-        Mockito.when(toDoRepository.save(task)).thenThrow( new IllegalArgumentException("Invalid task data"));
 
-        assertThrows(IllegalArgumentException.class, () -> toDoService.create(task));
-        Mockito.verify(toDoRepository, Mockito.times(1)).save(task);
+        Mockito.when(toDoRepository.save(Mockito.any(ToDo.class))).thenThrow( new IllegalArgumentException("Invalid task data"));
+
+        assertThrows(IllegalArgumentException.class, () -> toDoService.create(taskDTO));
+        Mockito.verify(toDoRepository, Mockito.times(1)).save(Mockito.any(ToDo.class));
 
     }
 
