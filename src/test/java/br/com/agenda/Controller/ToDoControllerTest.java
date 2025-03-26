@@ -1,6 +1,7 @@
 package br.com.Agenda.Controller;
 
 import br.com.Agenda.Model.RequestDTO;
+import br.com.Agenda.Model.ResponseDTO;
 import br.com.Agenda.Model.ToDo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,18 +88,18 @@ class ToDoControllerTest {
     @DisplayName(" Task updated successfully")
     void testUpdateTaskSuccess(){
 
-        var oldTask = new ToDo("task", "test", false, 0);
-        ResponseEntity<ToDo> toDoResponseEntity = testRestTemplate.postForEntity("/tasks", oldTask, ToDo.class);
+        var oldTask = new RequestDTO("task", "test", 0);
+        ResponseEntity<ResponseDTO> toDoResponseEntity = testRestTemplate.postForEntity("/tasks", oldTask, ResponseDTO.class);
 
         var newTask = new ToDo("new task", "new test", true, 0);
 
-        ResponseEntity<ToDo[]> exchange = testRestTemplate.exchange("/tasks/" + toDoResponseEntity.getBody().getId(), HttpMethod.PUT, new HttpEntity<>(newTask), ToDo[].class);
+        ResponseEntity<ToDo[]> exchange = testRestTemplate.exchange("/tasks/" + toDoResponseEntity.getBody().id(), HttpMethod.PUT, new HttpEntity<>(newTask), ToDo[].class);
 
         assertEquals(HttpStatus.OK, exchange.getStatusCode());
         assertNotNull(exchange.getBody());
 
         // estudar stream para recuperar a nova task com o index correspondente à task antiga com o mesmo id .
-//        List<ToDo> tasksUpdate = Arrays.asList(exchange.getBody());
+//       // List<ToDo> tasksUpdate = Arrays.asList(exchange.getBody());
 //
 //        assertEquals("new task", tasksUpdate.get(toDoResponseEntity.getBody().getId()));
 //        assertEquals("new test", exchange.getBody().getDescription());

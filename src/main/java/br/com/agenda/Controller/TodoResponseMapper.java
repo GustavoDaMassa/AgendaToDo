@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class TodoResponseMapper {
 
     public ResponseDTO toDTOwithID(ToDo task){
-        return new ResponseDTO( task.getName(), task.getDescription(), task.isDone(), task.getPriority());
+        return new ResponseDTO(task.getId(), task.getName(), task.getDescription(), task.isDone(), task.getPriority());
     }
 }

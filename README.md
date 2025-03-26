@@ -1,13 +1,19 @@
 <h1 align="center">
   AgendaToDo
 </h1>
+
+
 <h2 align="center">
   Sistema de Gerenciamento de tarefas
 </h2>
 
 <p align="center">
- <img src="https://img.shields.io/static/v1?label=Email&message=gustavo.pereira@discente.ufg.br&color=8257E5&labelColor=000000" alt="gustavo.pereira@discente.ufg.br" />
- <img src="https://img.shields.io/static/v1?label=Tipo&message=Desafio&color=8257E5&labelColor=000000" alt="Desafio" />
+ <img src="https://img.shields.io/static/v1?label=Email&message=gustavo.pereira@discente.ufg.br&color=4444E5&labelColor=000000" alt="gustavo.pereira@discente.ufg.br" />
+ <img src="https://img.shields.io/static/v1?label=Tipo&message=Desafio&color=4444E5&labelColor=000000" alt="Desafio" />
+</p>
+
+<p align="center">
+  <img src="img_1.png" alt="Descrição da Imagem">
 </p>
 
  API para gerenciar tarefas que faz parte do [desafio](https://github.com/simplify-liferay/desafio-junior-backend-simplify) da Simplify, para desenvolvedores backend júnior.
@@ -135,6 +141,19 @@ $ ./mvnw clean package
 - Executar a aplicação:
 ```
 $ java -jar target/Agenda-0.0.1-SNAPSHOT.jar
+```
+### Usando Docker
+
+- Clonar repositório git
+- Construir o projeto:
+
+- Construir a imagem:
+```
+./mvnw spring-boot:build-image
+```
+- Executar o container:
+```
+docker run --name place-service -p 8080:8080  -d place-service:0.0.1-SNAPSHOT
 ```
 
 A API poderá ser acessada em http://localhost:8080/tasks.
